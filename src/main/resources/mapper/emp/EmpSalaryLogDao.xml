@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lucode.salary.modules.emp.dao.EmpSalaryLogDao">
+  <resultMap id="BaseResultMap" type="cn.lucode.salary.modules.emp.entity.EmpSalaryLogEntity">
+    <id column="log_id" jdbcType="VARCHAR" property="logId" />
+    <result column="employee_id" jdbcType="BIGINT" property="employeeId" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
+    <result column="tax" jdbcType="DECIMAL" property="tax" />
+    <result column="real_salary" jdbcType="DECIMAL" property="realSalary" />
+    <result column="gmt_modify" jdbcType="TIMESTAMP" property="gmtModify" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    log_id, employee_id, salary, tax, real_salary, gmt_modify, gmt_create
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from emp_salary_log
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from emp_salary_log
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.lucode.salary.modules.emp.entity.EmpSalaryLogEntity">
+    <selectKey keyProperty="logId" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into emp_salary_log (employee_id, salary, tax, 
+      real_salary, gmt_modify, gmt_create
+      )
+    values (#{employeeId,jdbcType=BIGINT}, #{salary,jdbcType=DECIMAL}, #{tax,jdbcType=DECIMAL}, 
+      #{realSalary,jdbcType=DECIMAL}, #{gmtModify,jdbcType=TIMESTAMP}, #{gmtCreate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.lucode.salary.modules.emp.entity.EmpSalaryLogEntity">
+    <selectKey keyProperty="logId" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into emp_salary_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="employeeId != null">
+        employee_id,
+      </if>
+      <if test="salary != null">
+        salary,
+      </if>
+      <if test="tax != null">
+        tax,
+      </if>
+      <if test="realSalary != null">
+        real_salary,
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="employeeId != null">
+        #{employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="salary != null">
+        #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="tax != null">
+        #{tax,jdbcType=DECIMAL},
+      </if>
+      <if test="realSalary != null">
+        #{realSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="gmtModify != null">
+        #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lucode.salary.modules.emp.entity.EmpSalaryLogEntity">
+    update emp_salary_log
+    <set>
+      <if test="employeeId != null">
+        employee_id = #{employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="salary != null">
+        salary = #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="tax != null">
+        tax = #{tax,jdbcType=DECIMAL},
+      </if>
+      <if test="realSalary != null">
+        real_salary = #{realSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.lucode.salary.modules.emp.entity.EmpSalaryLogEntity">
+    update emp_salary_log
+    set employee_id = #{employeeId,jdbcType=BIGINT},
+      salary = #{salary,jdbcType=DECIMAL},
+      tax = #{tax,jdbcType=DECIMAL},
+      real_salary = #{realSalary,jdbcType=DECIMAL},
+      gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </update>
+</mapper>

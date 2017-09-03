@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lucode.salary.modules.emp.dao.EmpSalaryDao">
+  <resultMap id="BaseResultMap" type="cn.lucode.salary.modules.emp.entity.EmpSalaryEntity">
+    <id column="salary_id" jdbcType="BIGINT" property="salaryId" />
+    <result column="employee_id" jdbcType="BIGINT" property="employeeId" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
+    <result column="gmt_modify" jdbcType="TIMESTAMP" property="gmtModify" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    salary_id, employee_id, salary, gmt_modify, gmt_create
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from emp_salary
+    where salary_id = #{salaryId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from emp_salary
+    where salary_id = #{salaryId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.lucode.salary.modules.emp.entity.EmpSalaryEntity">
+    <selectKey keyProperty="salaryId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into emp_salary (employee_id, salary, gmt_modify, 
+      gmt_create)
+    values (#{employeeId,jdbcType=BIGINT}, #{salary,jdbcType=DECIMAL}, #{gmtModify,jdbcType=TIMESTAMP}, 
+      #{gmtCreate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.lucode.salary.modules.emp.entity.EmpSalaryEntity">
+    <selectKey keyProperty="salaryId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into emp_salary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="employeeId != null">
+        employee_id,
+      </if>
+      <if test="salary != null">
+        salary,
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="employeeId != null">
+        #{employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="salary != null">
+        #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="gmtModify != null">
+        #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lucode.salary.modules.emp.entity.EmpSalaryEntity">
+    update emp_salary
+    <set>
+      <if test="employeeId != null">
+        employee_id = #{employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="salary != null">
+        salary = #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where salary_id = #{salaryId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.lucode.salary.modules.emp.entity.EmpSalaryEntity">
+    update emp_salary
+    set employee_id = #{employeeId,jdbcType=BIGINT},
+      salary = #{salary,jdbcType=DECIMAL},
+      gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where salary_id = #{salaryId,jdbcType=BIGINT}
+  </update>
+</mapper>
